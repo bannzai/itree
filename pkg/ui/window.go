@@ -23,5 +23,6 @@ func NewWindow(width, height int) *Window {
 	window.Root = NewPages(
 		NewTree(window),
 	)
+	window.SetRect(0, 0, width, height)
 	return window
 }
