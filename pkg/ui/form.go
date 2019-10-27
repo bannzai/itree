@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"path/filepath"
 
 	"github.com/rivo/tview"
@@ -24,27 +25,30 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 	nodeReference := node.GetReference().(nodeReference)
 	fromPath := nodeReference.path
 	directoryPath := filepath.Dir(fromPath)
-	editedPath := filepath.Base(fromPath)
+	editedFileName := filepath.Base(fromPath)
 
 	form.
 		SetBorder(true).
 		SetTitleAlign(tview.AlignLeft).
 		SetTitle("Rename")
 	form.
-		AddInputField("New Path", editedPath, inputWidth, nil, func(s string) {
-			editedPath = s
+		AddInputField("New Path", editedFileName, inputWidth, nil, func(s string) {
+			editedFileName = s
 		}).
 		AddButton("Decide", func() {
+			editedPath := filepath.Join(directoryPath, editedFileName)
 			if fromPath == editedPath {
 				closeForm()
 				return
 			}
 
-			if err := moveFile(fromPath, editedPath); err == nil {
+			if err := moveFile(fromPath, editedPath); err != nil {
+				panic(fmt.Sprintf("err %v, from: %s, editedFileName: %s, editedPath: %s", err, fromPath, editedFileName, editedPath))
+			} else {
 				// TODO: show error dialog
-				nodeReference.setPath(filepath.Join(directoryPath, editedPath))
+				nodeReference.setPath(editedPath)
 				node.SetReference(nodeReference)
-				node.SetText(editedPath)
+				node.SetText(editedFileName)
 				closeForm()
 			}
 		}).
