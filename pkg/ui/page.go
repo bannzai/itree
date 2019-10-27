@@ -14,7 +14,7 @@ type Pages struct {
 func NewPages(pages ...Page) Pages {
 	pagesView := tview.NewPages()
 	for i, page := range pages {
-		pagesView.AddPage(page.name(), page.view(), false, i == 0)
+		pagesView.AddPage(page.name(), page.view(), true, i == 0)
 	}
 	return Pages{
 		pagesView,
