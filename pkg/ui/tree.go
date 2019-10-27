@@ -3,6 +3,7 @@ package ui
 import (
 	"fmt"
 	"io/ioutil"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/atotto/clipboard"
@@ -108,5 +109,10 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 		}
 	case 'r':
 		tree.switcher.SwitchRenameForm(tree.GetCurrentNode())
+	case 'o':
+		path := tree.GetCurrentNode().GetReference().(nodeReference).path
+		if err := exec.Command("open", path); err != nil {
+			panic(err)
+		}
 	}
 }
