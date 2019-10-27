@@ -20,6 +20,10 @@ type nodeReference struct {
 	isDir bool
 }
 
+func (reference *nodeReference) setPath(path string) {
+	reference.path = path
+}
+
 func NewTree(switcher switcher) Tree {
 	rootDir := "./"
 	root := tview.NewTreeNode(rootDir).
