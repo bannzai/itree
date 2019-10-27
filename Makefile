@@ -3,6 +3,9 @@ PROJECT?=itree
 DOMAIN?=github.com
 PACKAGE?=$(DOMAIN)/$(AUTHOR)/$(PROJECT)
 
+dry-run: build
+	./$(PROJECT) 
+
 build:
 	go build -o $(PROJECT) main.go
 
