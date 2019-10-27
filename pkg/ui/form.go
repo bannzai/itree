@@ -12,6 +12,11 @@ type Form struct {
 
 func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 	form := Form{tview.NewForm()}
+
+	closeForm := func() {
+		window.Root.RemovePage(form.name())
+	}
+
 	form.
 		SetBorder(true).
 		SetTitleAlign(tview.AlignLeft).
@@ -23,9 +28,10 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 		}).
 		AddButton("Decide", func() {
 			node.SetReference(text)
+			closeForm()
 		}).
 		AddButton("Cancel", func() {
-			window.Root.RemovePage(form.name())
+			closeForm()
 		})
 
 	window.Root.AddAndSwitchToPage(form.name(), form.view(), true)
