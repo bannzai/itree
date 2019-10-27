@@ -52,14 +52,12 @@ func NewTree(switcher switcher) Tree {
 		}
 	}
 
-	// Add the current directory to the root node.
 	add(root, rootDir)
 
-	// If a directory was selected, open it.
 	tree.SetSelectedFunc(func(node *tview.TreeNode) {
 		reference := node.GetReference()
 		if reference == nil {
-			return // Selecting the root node does nothing.
+			return
 		}
 		nodeReference := reference.(nodeReference)
 		if !nodeReference.isDir {
@@ -68,11 +66,9 @@ func NewTree(switcher switcher) Tree {
 
 		children := node.GetChildren()
 		if len(children) == 0 {
-			// Load and show files in this directory.
 			path := nodeReference.path
 			add(node, path)
 		} else {
-			// Collapse if visible, expand if collapsed.
 			node.SetExpanded(!node.IsExpanded())
 		}
 	})
