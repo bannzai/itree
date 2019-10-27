@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/bannzai/itree/pkg/parser"
+	"github.com/bannzai/itree/pkg/fetcher"
 	"github.com/bannzai/itree/pkg/ui"
 	"github.com/rivo/tview"
 )
 
 func main() {
-	size, err := parser.ParseSize()
+	size, err := fetcher.ParseSize()
 	if err != nil {
 		panic(err)
 	}
