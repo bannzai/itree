@@ -40,11 +40,10 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 				return
 			}
 
-			nodeReference.setPath(filepath.Join(directoryPath, editedPath))
-			node.SetReference(nodeReference)
-
 			if err := moveFile(fromPath, editedPath); err == nil {
 				// TODO: show error dialog
+				nodeReference.setPath(filepath.Join(directoryPath, editedPath))
+				node.SetReference(nodeReference)
 				node.SetText(editedPath)
 				closeForm()
 			}
