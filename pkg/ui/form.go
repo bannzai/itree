@@ -28,7 +28,7 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 			window.Root.RemovePage(form.name())
 		})
 
-	window.Root.AddAndSwitchToPage(form.name(), form.view(), false)
+	window.Root.AddAndSwitchToPage(form.name(), form.view(), true)
 }
 
 func (Form) name() string {
