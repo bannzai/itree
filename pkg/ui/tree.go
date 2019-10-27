@@ -31,29 +31,7 @@ func NewTree(switcher switcher) Tree {
 		switcher: switcher,
 	}
 
-	add := func(target *tview.TreeNode, path string) {
-		files, err := ioutil.ReadDir(path)
-		if err != nil {
-			panic(err)
-		}
-		for _, file := range files {
-			node := tview.NewTreeNode(file.Name()).
-				SetReference(
-					nodeReference{
-						path:  filepath.Join(path, file.Name()),
-						isDir: file.IsDir(),
-					},
-				).
-				SetSelectable(true)
-
-			if file.IsDir() {
-				node.SetColor(tcell.ColorGreen)
-			}
-			target.AddChild(node)
-		}
-	}
-
-	add(root, rootDir)
+	tree.addNode(root, rootDir)
 
 	tree.SetSelectedFunc(func(node *tview.TreeNode) {
 		reference := node.GetReference()
@@ -68,7 +46,7 @@ func NewTree(switcher switcher) Tree {
 		children := node.GetChildren()
 		if len(children) == 0 {
 			path := nodeReference.path
-			add(node, path)
+			tree.addNode(node, path)
 		} else {
 			node.SetExpanded(!node.IsExpanded())
 		}
@@ -92,6 +70,28 @@ func (tree Tree) name() string {
 
 func (tree Tree) view() tview.Primitive {
 	return tree.TreeView
+}
+
+func (tree *Tree) addNode(directoryNode *tview.TreeNode, path string) {
+	files, err := ioutil.ReadDir(path)
+	if err != nil {
+		panic(err)
+	}
+	for _, file := range files {
+		node := tview.NewTreeNode(file.Name()).
+			SetReference(
+				nodeReference{
+					path:  filepath.Join(path, file.Name()),
+					isDir: file.IsDir(),
+				},
+			).
+			SetSelectable(true)
+
+		if file.IsDir() {
+			node.SetColor(tcell.ColorGreen)
+		}
+		directoryNode.AddChild(node)
+	}
 }
 
 func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
