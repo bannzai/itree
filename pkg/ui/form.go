@@ -31,6 +31,7 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 			node.SetReference(text)
 			if err := moveFile(from, text); err == nil {
 				// TODO: show error dialog
+				node.SetText(text)
 				closeForm()
 			}
 		}).

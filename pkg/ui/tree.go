@@ -45,6 +45,7 @@ func NewTree(switcher switcher) Tree {
 					},
 				).
 				SetSelectable(true)
+
 			if file.IsDir() {
 				node.SetColor(tcell.ColorGreen)
 			}
