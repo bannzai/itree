@@ -27,7 +27,9 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 			text = s
 		}).
 		AddButton("Decide", func() {
+			from := node.GetReference().(nodeReference).path
 			node.SetReference(text)
+			moveFile(from, text)
 			closeForm()
 		}).
 		AddButton("Cancel", func() {

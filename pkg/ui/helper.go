@@ -1,6 +1,9 @@
 package ui
 
-import "path/filepath"
+import (
+	"os/exec"
+	"path/filepath"
+)
 
 func absolutePath(node nodeReference) string {
 	relativePath := node.path
@@ -9,4 +12,9 @@ func absolutePath(node nodeReference) string {
 		panic(err)
 	}
 	return absolutePath
+}
+
+func moveFile(from, to string) error {
+	mvCmd := exec.Command("mv", from, to)
+	return mvCmd.Run()
 }
