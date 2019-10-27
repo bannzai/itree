@@ -1,20 +1,28 @@
 package ui
 
 import (
+	"fmt"
 	"io/ioutil"
 	"path/filepath"
 
+	"github.com/atotto/clipboard"
 	"github.com/gdamore/tcell"
 	"github.com/rivo/tview"
 )
 
-func TreeUI() *tview.TreeView {
-	rootDir := "."
+type Tree struct {
+	*tview.TreeView
+}
+
+func NewTree() Tree {
+	rootDir := "./"
 	root := tview.NewTreeNode(rootDir).
 		SetColor(tcell.ColorRed)
-	tree := tview.NewTreeView().
-		SetRoot(root).
-		SetCurrentNode(root)
+	tree := Tree{
+		tview.NewTreeView().
+			SetRoot(root).
+			SetCurrentNode(root),
+	}
 
 	add := func(target *tview.TreeNode, path string) {
 		files, err := ioutil.ReadDir(path)
@@ -52,8 +60,55 @@ func TreeUI() *tview.TreeView {
 		}
 	})
 
-	if err := tview.NewApplication().SetRoot(tree, true).Run(); err != nil {
-		panic(err)
-	}
+	defaultInputHandler := tree.InputHandler()
+	defaultInputCapture := tree.GetInputCapture()
+	tree.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if !containsCaptureKey(event) {
+			return defaultInputCapture(event)
+		}
+
+		tree.handleEventWithKey(event)
+		return event
+	})
+
+	tree.WrapInputHandler(func(event *tcell.EventKey, setFocus func(p tview.Primitive)) {
+		defaultInputHandler(event, setFocus)
+	})
+
 	return tree
+}
+
+func (tree Tree) name() string {
+	return nameOfTree
+}
+
+func (tree Tree) view() tview.Primitive {
+	return tree.TreeView
+}
+
+func containsCaptureKey(event *tcell.EventKey) bool {
+	if event.Key() != tcell.KeyRune {
+		return false
+	}
+
+	switch event.Rune() {
+	case 'c', 'r':
+		return true
+	default:
+		return false
+	}
+}
+
+func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
+	switch event.Rune() {
+	case 'c':
+		path := tree.GetCurrentNode().GetReference().(string)
+		if err := clipboard.WriteAll(path); err != nil {
+			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
+			return
+		}
+	case 'r':
+		path := tree.GetCurrentNode().GetReference().(string)
+		fmt.Println(path)
+	}
 }
