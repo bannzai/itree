@@ -111,7 +111,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 		tree.switcher.SwitchRenameForm(tree.GetCurrentNode())
 	case 'o':
 		path := tree.GetCurrentNode().GetReference().(nodeReference).path
-		if err := exec.Command("open", path); err != nil {
+		if err := exec.Command("open", path).Run(); err != nil {
 			panic(err)
 		}
 	}
