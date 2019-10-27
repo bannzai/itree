@@ -1,6 +1,12 @@
 package ui
 
-import "github.com/rivo/tview"
+import (
+	"github.com/rivo/tview"
+)
+
+type switcher interface {
+	SwitchRenameForm(node *tview.TreeNode)
+}
 
 type Root interface {
 	tview.Primitive
