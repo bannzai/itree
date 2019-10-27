@@ -96,7 +96,7 @@ func (tree Tree) view() tview.Primitive {
 func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	switch event.Rune() {
 	case 'c':
-		path := tree.GetCurrentNode().GetReference().(nodeReference).path
+		path := absolutePath(tree.GetCurrentNode().GetReference().(nodeReference))
 		if err := clipboard.WriteAll(path); err != nil {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
 			return
