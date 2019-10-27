@@ -12,16 +12,23 @@ import (
 
 type Tree struct {
 	*tview.TreeView
+	switcher
 }
 
-func NewTree() Tree {
+type nodeReference struct {
+	path  string
+	isDir bool
+}
+
+func NewTree(switcher switcher) Tree {
 	rootDir := "./"
 	root := tview.NewTreeNode(rootDir).
 		SetColor(tcell.ColorRed)
 	tree := Tree{
-		tview.NewTreeView().
+		TreeView: tview.NewTreeView().
 			SetRoot(root).
 			SetCurrentNode(root),
+		switcher: switcher,
 	}
 
 	add := func(target *tview.TreeNode, path string) {
@@ -31,8 +38,13 @@ func NewTree() Tree {
 		}
 		for _, file := range files {
 			node := tview.NewTreeNode(file.Name()).
-				SetReference(filepath.Join(path, file.Name())).
-				SetSelectable(file.IsDir())
+				SetReference(
+					nodeReference{
+						path:  filepath.Join(path, file.Name()),
+						isDir: file.IsDir(),
+					},
+				).
+				SetSelectable(true)
 			if file.IsDir() {
 				node.SetColor(tcell.ColorGreen)
 			}
@@ -49,10 +61,15 @@ func NewTree() Tree {
 		if reference == nil {
 			return // Selecting the root node does nothing.
 		}
+		nodeReference := reference.(nodeReference)
+		if !nodeReference.isDir {
+			return
+		}
+
 		children := node.GetChildren()
 		if len(children) == 0 {
 			// Load and show files in this directory.
-			path := reference.(string)
+			path := nodeReference.path
 			add(node, path)
 		} else {
 			// Collapse if visible, expand if collapsed.
@@ -60,19 +77,13 @@ func NewTree() Tree {
 		}
 	})
 
-	defaultInputHandler := tree.InputHandler()
-	defaultInputCapture := tree.GetInputCapture()
 	tree.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		if !containsCaptureKey(event) {
-			return defaultInputCapture(event)
-		}
-
 		tree.handleEventWithKey(event)
 		return event
 	})
 
+	tree.InputHandler()
 	tree.WrapInputHandler(func(event *tcell.EventKey, setFocus func(p tview.Primitive)) {
-		defaultInputHandler(event, setFocus)
 	})
 
 	return tree
@@ -86,29 +97,15 @@ func (tree Tree) view() tview.Primitive {
 	return tree.TreeView
 }
 
-func containsCaptureKey(event *tcell.EventKey) bool {
-	if event.Key() != tcell.KeyRune {
-		return false
-	}
-
-	switch event.Rune() {
-	case 'c', 'r':
-		return true
-	default:
-		return false
-	}
-}
-
 func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	switch event.Rune() {
 	case 'c':
-		path := tree.GetCurrentNode().GetReference().(string)
+		path := tree.GetCurrentNode().GetReference().(nodeReference).path
 		if err := clipboard.WriteAll(path); err != nil {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
 			return
 		}
 	case 'r':
-		path := tree.GetCurrentNode().GetReference().(string)
-		fmt.Println(path)
+		tree.switcher.SwitchRenameForm(tree.GetCurrentNode())
 	}
 }
