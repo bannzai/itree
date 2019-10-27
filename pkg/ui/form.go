@@ -10,13 +10,13 @@ type Form struct {
 	*tview.Form
 }
 
-func (window *Window) SwitchRenameForm(node *tview.TreeNode) Form {
-	form := tview.NewForm()
+func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
+	form := Form{tview.NewForm()}
 	form.
 		SetBorder(true).
 		SetTitleAlign(tview.AlignLeft).
 		SetTitle("Rename")
-	text := node.GetReference().(string)
+	text := node.GetReference().(nodeReference).path
 	form.
 		AddInputField("New Path", text, inputWidth, nil, func(s string) {
 			text = s
@@ -25,11 +25,10 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) Form {
 			node.SetReference(text)
 		}).
 		AddButton("Cancel", func() {
-
+			window.Root.RemovePage(form.name())
 		})
-	return Form{
-		form,
-	}
+
+	window.Root.AddAndSwitchToPage(form.name(), form.view(), false)
 }
 
 func (Form) name() string {
