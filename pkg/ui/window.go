@@ -15,14 +15,13 @@ type Root interface {
 }
 
 type Window struct {
-	tview.Primitive
-	root Root
+	Root
 }
 
-func NewWindow() Window {
-	return Window{
-		root: NewPages(
-			NewTree(),
-		),
-	}
+func NewWindow(width, height int) *Window {
+	window := &Window{}
+	window.Root = NewPages(
+		NewTree(window),
+	)
+	return window
 }
