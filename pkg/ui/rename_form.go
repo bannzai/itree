@@ -16,7 +16,7 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 		window.Root.RemovePage(form.name())
 	}
 
-	nodeReference := node.GetReference().(nodeReference)
+	nodeReference := extractNodeReference(node)
 	fromPath := nodeReference.path
 	directoryPath := filepath.Dir(fromPath)
 	editedFileName := filepath.Base(fromPath)

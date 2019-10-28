@@ -17,13 +17,13 @@ func (window *Window) SwitchAddFileForm(selectedNode *tview.TreeNode) {
 	}
 
 	var directoryNode *tview.TreeNode
-	selectedNodeReference := selectedNode.GetReference().(*nodeReference)
+	selectedNodeReference := extractNodeReference(selectedNode)
 	if selectedNodeReference.isDir {
 		directoryNode = selectedNode
 	} else {
 		directoryNode = selectedNodeReference.parentNode
 	}
-	directoryNodeReference := directoryNode.GetReference().(*nodeReference)
+	directoryNodeReference := extractNodeReference(directoryNode)
 	directoryPath := filepath.Dir(directoryNodeReference.path)
 	editedFileName := ""
 

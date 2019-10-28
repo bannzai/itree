@@ -51,7 +51,7 @@ func NewTree(switcher switcher) Tree {
 		if reference == nil {
 			return
 		}
-		nodeReference := reference.(nodeReference)
+		nodeReference := reference.(*nodeReference)
 		if !nodeReference.isDir {
 			return
 		}
@@ -102,7 +102,8 @@ func (tree *Tree) addNode(directoryNode *tview.TreeNode, path string) {
 func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	switch event.Rune() {
 	case 'c':
-		path := absolutePath(*tree.GetCurrentNode().GetReference().(*nodeReference))
+		nodeReference := extractNodeReference(tree.GetCurrentNode())
+		path := absolutePath(*nodeReference)
 		if err := clipboard.WriteAll(path); err != nil {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
 			return
@@ -110,7 +111,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	case 'r':
 		tree.switcher.SwitchRenameForm(tree.GetCurrentNode())
 	case 'o':
-		path := tree.GetCurrentNode().GetReference().(nodeReference).path
+		path := extractNodeReference(tree.GetCurrentNode()).path
 		if err := exec.Command("open", path).Run(); err != nil {
 			panic(err)
 		}

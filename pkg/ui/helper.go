@@ -32,6 +32,10 @@ func createFile(path string) error {
 	return nil
 }
 
+func extractNodeReference(node *tview.TreeNode) *nodeReference {
+	return node.GetReference().(*nodeReference)
+}
+
 func createTreeNode(fileName string, isDir bool, parent *tview.TreeNode) *tview.TreeNode {
 	var parentPath string
 	parentReference, ok := parent.GetReference().(*nodeReference)
