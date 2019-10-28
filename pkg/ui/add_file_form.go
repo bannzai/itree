@@ -24,7 +24,7 @@ func (window *Window) SwitchAddFileForm(selectedNode *tview.TreeNode) {
 		directoryNode = selectedNodeReference.parentNode
 	}
 	directoryNodeReference := extractNodeReference(directoryNode)
-	directoryPath := filepath.Dir(directoryNodeReference.path)
+	directoryPath := directoryNodeReference.path
 	editedFileName := ""
 
 	form.
