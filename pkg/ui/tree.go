@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os/exec"
-	"path/filepath"
 
 	"github.com/atotto/clipboard"
 	"github.com/gdamore/tcell"
@@ -17,12 +16,21 @@ type Tree struct {
 }
 
 type nodeReference struct {
-	path  string
-	isDir bool
+	path       string
+	isDir      bool
+	parentNode *tview.TreeNode
 }
 
 func (reference *nodeReference) setPath(path string) {
 	reference.path = path
+}
+
+func newNodeReference(path string, isDir bool, parentNode *tview.TreeNode) *nodeReference {
+	return &nodeReference{
+		path:       path,
+		isDir:      isDir,
+		parentNode: parentNode,
+	}
 }
 
 func NewTree(switcher switcher) Tree {
@@ -83,15 +91,7 @@ func (tree *Tree) addNode(directoryNode *tview.TreeNode, path string) {
 		panic(err)
 	}
 	for _, file := range files {
-		node := tview.NewTreeNode(file.Name()).
-			SetReference(
-				nodeReference{
-					path:  filepath.Join(path, file.Name()),
-					isDir: file.IsDir(),
-				},
-			).
-			SetSelectable(true)
-
+		node := createTreeNode(file.Name(), file.IsDir(), directoryNode)
 		if file.IsDir() {
 			node.SetColor(tcell.ColorGreen)
 		}
@@ -102,7 +102,7 @@ func (tree *Tree) addNode(directoryNode *tview.TreeNode, path string) {
 func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	switch event.Rune() {
 	case 'c':
-		path := absolutePath(tree.GetCurrentNode().GetReference().(nodeReference))
+		path := absolutePath(*tree.GetCurrentNode().GetReference().(*nodeReference))
 		if err := clipboard.WriteAll(path); err != nil {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
 			return
@@ -114,5 +114,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 		if err := exec.Command("open", path).Run(); err != nil {
 			panic(err)
 		}
+	case 'n':
+		tree.switcher.SwitchAddFileForm(tree.GetCurrentNode())
 	}
 }
