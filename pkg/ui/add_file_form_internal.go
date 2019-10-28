@@ -40,7 +40,7 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 		SetTitleAlign(tview.AlignLeft).
 		SetTitle("Rename")
 	form.
-		AddInputField("Add File", editedFileName, inputWidth, nil, func(s string) {
+		AddInputField(formView.decideButtonTitle(), editedFileName, inputWidth, nil, func(s string) {
 			editedFileName = s
 		}).
 		AddButton("Decide", func() {
