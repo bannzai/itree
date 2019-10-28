@@ -11,6 +11,14 @@ type RenameForm struct {
 	*tview.Form
 }
 
+func (RenameForm) name() string {
+	return nameOfRenameForm
+}
+
+func (form RenameForm) view() tview.Primitive {
+	return form.Form
+}
+
 func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 	const inputWidth = 100
 
@@ -55,12 +63,4 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 		})
 
 	window.Root.AddAndSwitchToPage(form.name(), form.view(), true)
-}
-
-func (RenameForm) name() string {
-	return nameOfRenameForm
-}
-
-func (form RenameForm) view() tview.Primitive {
-	return form.Form
 }
