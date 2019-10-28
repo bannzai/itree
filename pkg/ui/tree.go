@@ -92,9 +92,6 @@ func (tree *Tree) addNode(directoryNode *tview.TreeNode, path string) {
 	}
 	for _, file := range files {
 		node := createTreeNode(file.Name(), file.IsDir(), directoryNode)
-		if file.IsDir() {
-			node.SetColor(tcell.ColorGreen)
-		}
 		directoryNode.AddChild(node)
 	}
 }

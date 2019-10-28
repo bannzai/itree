@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/gdamore/tcell"
 	"github.com/pkg/errors"
 	"github.com/rivo/tview"
 )
@@ -48,6 +49,14 @@ func createTreeNode(fileName string, isDir bool, parent *tview.TreeNode) *tview.
 	} else {
 		parentPath = "./"
 	}
+
+	var color tcell.Color
+	if isDir {
+		color = tcell.ColorGreen
+	} else {
+		color = tview.Styles.PrimaryTextColor
+	}
+
 	return tview.NewTreeNode(fileName).
 		SetReference(
 			newNodeReference(
@@ -56,5 +65,7 @@ func createTreeNode(fileName string, isDir bool, parent *tview.TreeNode) *tview.
 				parent,
 			),
 		).
-		SetSelectable(true)
+		SetSelectable(true).
+		SetColor(color)
+
 }
