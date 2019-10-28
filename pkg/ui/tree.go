@@ -8,7 +8,6 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/gdamore/tcell"
-	"github.com/lithammer/fuzzysearch/fuzzy"
 	"github.com/rivo/tview"
 )
 
@@ -115,14 +114,5 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 		if err := exec.Command("open", path).Run(); err != nil {
 			panic(err)
 		}
-	case '/':
-		tree.GetRoot().Walk(func(node, parent *TreeNode) bool {
-			if node == tree.GetRoot() {
-				return true
-			}
-			fuzzy.Match(node.GetReference().(nodeReference).path)
-
-		})
-
 	}
 }
