@@ -7,15 +7,9 @@ import (
 	"github.com/rivo/tview"
 )
 
-const (
-	inputWidth = 100
-)
-
-type Form struct {
-	*tview.Form
-}
-
 func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
+	const inputWidth = 100
+
 	form := Form{tview.NewForm()}
 
 	closeForm := func() {
