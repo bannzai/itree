@@ -23,13 +23,17 @@ func moveFile(from, to string) error {
 	return mvCmd.Run()
 }
 
-func createFile(path string) error {
-	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 0666)
+func makeFile(path string) error {
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		return errors.Wrapf(err, "New file error. path for  %s", path)
 	}
 	defer file.Close()
 	return nil
+}
+
+func makeDirectory(path string) error {
+	return os.Mkdir(path, 0777)
 }
 
 func extractNodeReference(node *tview.TreeNode) *nodeReference {

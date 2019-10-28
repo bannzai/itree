@@ -7,7 +7,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-func (window *Window) SwitchAddFileForm(selectedNode *tview.TreeNode) {
+func (window *Window) SwitchAddFileForm(selectedNode *tview.TreeNode, makeFileOrDirectory func(string) error) {
 	const inputWidth = 100
 
 	form := Form{tview.NewForm()}
@@ -37,7 +37,7 @@ func (window *Window) SwitchAddFileForm(selectedNode *tview.TreeNode) {
 		}).
 		AddButton("Decide", func() {
 			path := filepath.Join(directoryPath, editedFileName)
-			if err := createFile(path); err != nil {
+			if err := makeFileOrDirectory(path); err != nil {
 				panic(fmt.Sprintf("err %v, directoryPath: %v, editedFileName: %s", err, directoryPath, editedFileName))
 			} else {
 				// TODO: show error dialog
