@@ -4,13 +4,6 @@ import (
 	"github.com/rivo/tview"
 )
 
-type addFileForm interface {
-	Page
-	form() *tview.Form
-	isDir() bool
-	makeFunction(path string) error
-}
-
 type AddFileForm struct {
 	*tview.Form
 }
@@ -29,6 +22,9 @@ func (AddFileForm) name() string {
 }
 func (form AddFileForm) view() tview.Primitive {
 	return form.Form
+}
+func (form AddFileForm) decideButtonTitle() string {
+	return "Add File"
 }
 
 func (window *Window) SwitchAddFileForm(selectedNode *tview.TreeNode) {

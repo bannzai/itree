@@ -21,6 +21,9 @@ func (AddDirectoryForm) name() string {
 func (form AddDirectoryForm) view() tview.Primitive {
 	return form.Form
 }
+func (form AddDirectoryForm) decideButtonTitle() string {
+	return "Add Directory"
+}
 
 func (window *Window) SwitchAddDirectoryForm(selectedNode *tview.TreeNode) {
 	form := AddDirectoryForm{tview.NewForm()}
