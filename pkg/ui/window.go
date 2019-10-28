@@ -6,7 +6,8 @@ import (
 
 type switcher interface {
 	SwitchRenameForm(node *tview.TreeNode)
-	SwitchAddFileForm(*tview.TreeNode, func(string) error)
+	SwitchAddFileForm(*tview.TreeNode)
+	SwitchAddDirectoryForm(*tview.TreeNode)
 }
 
 type Root interface {

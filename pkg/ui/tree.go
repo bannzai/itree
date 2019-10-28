@@ -116,8 +116,8 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 			panic(err)
 		}
 	case 'n':
-		tree.switcher.SwitchAddFileForm(tree.GetCurrentNode(), makeFile)
+		tree.switcher.SwitchAddFileForm(tree.GetCurrentNode())
 	case 'N':
-		tree.switcher.SwitchAddFileForm(tree.GetCurrentNode(), makeDirectory)
+		tree.switcher.SwitchAddDirectoryForm(tree.GetCurrentNode())
 	}
 }
