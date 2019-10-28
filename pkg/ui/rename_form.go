@@ -7,10 +7,14 @@ import (
 	"github.com/rivo/tview"
 )
 
+type RenameForm struct {
+	*tview.Form
+}
+
 func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 	const inputWidth = 100
 
-	form := Form{tview.NewForm()}
+	form := RenameForm{tview.NewForm()}
 
 	closeForm := func() {
 		window.Root.RemovePage(form.name())
@@ -53,10 +57,10 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 	window.Root.AddAndSwitchToPage(form.name(), form.view(), true)
 }
 
-func (Form) name() string {
-	return nameOfForm
+func (RenameForm) name() string {
+	return nameOfRenameForm
 }
 
-func (form Form) view() tview.Primitive {
+func (form RenameForm) view() tview.Primitive {
 	return form.Form
 }

@@ -1,6 +1,7 @@
 package ui
 
 const (
-	nameOfForm = "Form"
-	nameOfTree = "Tree"
+	nameOfRenameForm = "RenameForm"
+	nameOfAddForm    = "AddForm"
+	nameOfTree       = "Tree"
 )

@@ -7,10 +7,22 @@ import (
 	"github.com/rivo/tview"
 )
 
+type AddFileForm struct {
+	*tview.Form
+}
+
+func (AddFileForm) name() string {
+	return nameOfAddForm
+}
+
+func (form AddFileForm) view() tview.Primitive {
+	return form.Form
+}
+
 func (window *Window) SwitchAddFileForm(selectedNode *tview.TreeNode, makeFileOrDirectory func(string) error) {
 	const inputWidth = 100
 
-	form := Form{tview.NewForm()}
+	form := AddFileForm{tview.NewForm()}
 
 	closeForm := func() {
 		window.Root.RemovePage(form.name())
