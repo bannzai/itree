@@ -14,6 +14,9 @@ func FileExists(filename string) bool {
 }
 
 func MoveFile(from, to string) error {
+	if FileExists(to) {
+		return fmt.Errorf("%s is already exists", to)
+	}
 	mvCmd := exec.Command("mv", from, to)
 	return mvCmd.Run()
 }
