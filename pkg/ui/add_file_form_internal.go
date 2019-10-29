@@ -47,9 +47,7 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 			path := filepath.Join(directoryPath, editedFileName)
 			if err := formView.makeFunction(path); err != nil {
 				errorField.SetText(err.Error())
-				// panic(fmt.Sprintf("err %v, directoryPath: %v, editedFileName: %s", err, directoryPath, editedFileName))
 			} else {
-				// TODO: show error dialog
 				directoryNode.AddChild(createTreeNode(editedFileName, formView.isDir(), directoryNode))
 				closeForm()
 			}
