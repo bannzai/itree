@@ -116,5 +116,8 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 		tree.switcher.SwitchAddFileForm(tree.GetCurrentNode())
 	case 'N':
 		tree.switcher.SwitchAddDirectoryForm(tree.GetCurrentNode())
+	case 'e':
+		nodeReference := extractNodeReference(tree.GetCurrentNode())
+		NewEditor().Launch(nodeReference.path)
 	}
 }
