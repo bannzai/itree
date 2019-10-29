@@ -35,12 +35,13 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 	directoryPath := directoryNodeReference.path
 	editedFileName := ""
 
+	errorField := NewErrorField()
 	grid := tview.NewGrid().
 		SetRows(3, 0, 3).
 		SetColumns(30, 0, 30).
 		SetBorders(true).
 		AddItem(form, 0, 0, 1, 3, 0, 0, false).
-		AddItem(newPrimitive("Footer"), 2, 0, 1, 3, 0, 0, false)
+		AddItem(errorField, 2, 0, 1, 3, 0, 0, false)
 
 	form.
 		SetBorder(true).
