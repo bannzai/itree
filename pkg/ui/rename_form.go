@@ -52,13 +52,13 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 
 			if err := file.MoveFile(fromPath, editedPath); err != nil {
 				errorField.SetText(err.Error())
-			} else {
-				// TODO: show error dialog
-				nodeReference.setPath(editedPath)
-				node.SetReference(nodeReference)
-				node.SetText(editedFileName)
-				closeForm()
+				return
 			}
+
+			nodeReference.setPath(editedPath)
+			node.SetReference(nodeReference)
+			node.SetText(editedFileName)
+			closeForm()
 		}).
 		AddButton("Cancel", func() {
 			closeForm()
@@ -67,4 +67,5 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 
 	grid := NewFormLayout(form, errorField)
 	window.Root.AddAndSwitchToPage(form.name(), grid, true)
+
 }

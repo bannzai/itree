@@ -47,10 +47,11 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 			path := filepath.Join(directoryPath, editedFileName)
 			if err := formView.makeFunction(path); err != nil {
 				errorField.SetText(err.Error())
-			} else {
-				directoryNode.AddChild(createTreeNode(editedFileName, formView.isDir(), directoryNode))
-				closeForm()
+				return
 			}
+
+			directoryNode.AddChild(createTreeNode(editedFileName, formView.isDir(), directoryNode))
+			closeForm()
 		}).
 		AddButton("Cancel", func() {
 			closeForm()
