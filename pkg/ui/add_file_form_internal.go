@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	"path/filepath"
 
 	"github.com/rivo/tview"
@@ -36,13 +35,6 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 	editedFileName := ""
 
 	errorField := NewErrorField()
-	grid := tview.NewGrid().
-		SetRows(3, 0, 3).
-		SetColumns(30, 0, 30).
-		SetBorders(true).
-		AddItem(form, 0, 0, 1, 3, 0, 0, false).
-		AddItem(errorField, 2, 0, 1, 3, 0, 0, false)
-
 	form.
 		SetBorder(true).
 		SetTitleAlign(tview.AlignLeft).
@@ -54,7 +46,8 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 		AddButton("Decide", func() {
 			path := filepath.Join(directoryPath, editedFileName)
 			if err := formView.makeFunction(path); err != nil {
-				panic(fmt.Sprintf("err %v, directoryPath: %v, editedFileName: %s", err, directoryPath, editedFileName))
+				errorField.SetText(err.Error())
+				// panic(fmt.Sprintf("err %v, directoryPath: %v, editedFileName: %s", err, directoryPath, editedFileName))
 			} else {
 				// TODO: show error dialog
 				directoryNode.AddChild(createTreeNode(editedFileName, formView.isDir(), directoryNode))
@@ -65,6 +58,13 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 			closeForm()
 		}).
 		SetCancelFunc(closeForm)
+
+	grid := tview.NewGrid().
+		SetRows(0, 1).
+		SetColumns(0).
+		SetBorders(true).
+		AddItem(form, 0, 0, 1, 1, 0, 0, false).
+		AddItem(errorField, 1, 0, 1, 1, 0, 30, false)
 
 	window.Root.AddAndSwitchToPage(formView.name(), grid, true)
 }
