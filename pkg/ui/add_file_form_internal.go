@@ -59,12 +59,6 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 		}).
 		SetCancelFunc(closeForm)
 
-	grid := tview.NewGrid().
-		SetRows(0, 1).
-		SetColumns(0).
-		SetBorders(true).
-		AddItem(form, 0, 0, 1, 1, 0, 0, true).
-		AddItem(errorField, 1, 0, 1, 1, 0, 30, false)
-
+	grid := NewFormLayout(form, errorField)
 	window.Root.AddAndSwitchToPage(formView.name(), grid, true)
 }
