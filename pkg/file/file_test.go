@@ -55,6 +55,14 @@ func TestMoveFile(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "when from path is not exists",
+			args: args{
+				from: currentDirectoryPath(t) + "/testdata/_testfile.go",
+				to:   temporaryFilePath(t),
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
