@@ -7,6 +7,8 @@ import (
 	"runtime"
 	"testing"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 func currentFilePath(t *testing.T) string {
@@ -22,11 +24,19 @@ func currentDirectoryPath(t *testing.T) string {
 }
 
 func temporaryDirectoryPath(t *testing.T) string {
-	return filepath.Join("/tmp", fmt.Sprintf("itreetest+%s_%d", t.Name(), time.Now().Unix()))
+	uuid, err := uuid.NewRandom()
+	if err != nil {
+		t.Error(err)
+	}
+	return filepath.Join("/tmp", fmt.Sprintf("itreetest+%s-%s_%d", t.Name(), uuid.String(), time.Now().Unix()))
 }
 
 func pathForCreateTemporaryFile(t *testing.T) string {
-	file, err := ioutil.TempFile("/tmp", fmt.Sprintf("itreetest+%s_%d", t.Name(), time.Now().Unix()))
+	uuid, err := uuid.NewRandom()
+	if err != nil {
+		t.Error(err)
+	}
+	file, err := ioutil.TempFile("/tmp", fmt.Sprintf("itreetest+%s-%s_%d", t.Name(), uuid.String(), time.Now().Unix()))
 	if err != nil {
 		t.Error(err)
 	}
