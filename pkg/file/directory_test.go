@@ -1,6 +1,10 @@
 package file
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/bannzai/itree/pkg/testutil"
+)
 
 func TestMakeDirectory(t *testing.T) {
 	type args struct {
@@ -11,7 +15,20 @@ func TestMakeDirectory(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "successfully MakeDirectory",
+			args: args{
+				path: testutil.TemporaryDirectoryPath(t),
+			},
+			wantErr: false,
+		},
+		{
+			name: "directory is already exists",
+			args: args{
+				path: testutil.CurrentDirectoryPath(t) + "/testdata",
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
