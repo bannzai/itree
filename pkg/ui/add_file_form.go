@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"github.com/bannzai/itree/pkg/file"
 	"github.com/rivo/tview"
 )
 
@@ -15,7 +16,7 @@ func (form AddFileForm) isDir() bool {
 	return false
 }
 func (form AddFileForm) makeFunction(path string) error {
-	return makeFile(path)
+	return file.MakeFile(path)
 }
 func (AddFileForm) name() string {
 	return nameOfAddForm

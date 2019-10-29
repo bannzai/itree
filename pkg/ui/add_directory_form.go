@@ -1,6 +1,9 @@
 package ui
 
-import "github.com/rivo/tview"
+import (
+	"github.com/bannzai/itree/pkg/file"
+	"github.com/rivo/tview"
+)
 
 type AddDirectoryForm struct {
 	*tview.Form
@@ -13,7 +16,7 @@ func (form AddDirectoryForm) isDir() bool {
 	return true
 }
 func (form AddDirectoryForm) makeFunction(path string) error {
-	return makeDirectory(path)
+	return file.MakeDirectory(path)
 }
 func (AddDirectoryForm) name() string {
 	return nameOfAddForm

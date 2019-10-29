@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/bannzai/itree/pkg/file"
 	"github.com/rivo/tview"
 )
 
@@ -48,7 +49,7 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 				return
 			}
 
-			if err := moveFile(fromPath, editedPath); err != nil {
+			if err := file.MoveFile(fromPath, editedPath); err != nil {
 				panic(fmt.Sprintf("err %v, from: %s, editedFileName: %s, editedPath: %s", err, fromPath, editedFileName, editedPath))
 			} else {
 				// TODO: show error dialog
