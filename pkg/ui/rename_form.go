@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	"path/filepath"
 
 	"github.com/bannzai/itree/pkg/file"
@@ -34,6 +33,8 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 	directoryPath := filepath.Dir(fromPath)
 	editedFileName := filepath.Base(fromPath)
 
+	errorField := NewErrorField()
+
 	form.
 		SetBorder(true).
 		SetTitleAlign(tview.AlignLeft).
@@ -50,7 +51,7 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 			}
 
 			if err := file.MoveFile(fromPath, editedPath); err != nil {
-				panic(fmt.Sprintf("err %v, from: %s, editedFileName: %s, editedPath: %s", err, fromPath, editedFileName, editedPath))
+				errorField.SetText(err.Error())
 			} else {
 				// TODO: show error dialog
 				nodeReference.setPath(editedPath)
@@ -64,5 +65,6 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 		}).
 		SetCancelFunc(closeForm)
 
-	window.Root.AddAndSwitchToPage(form.name(), form.view(), true)
+	grid := NewFormLayout(form, errorField)
+	window.Root.AddAndSwitchToPage(form.name(), grid, true)
 }
