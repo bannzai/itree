@@ -12,7 +12,9 @@ func main() {
 		panic(err)
 	}
 
-	if err := tview.NewApplication().SetRoot(ui.NewWindow(size.Width, size.Height), true).Run(); err != nil {
+	application := tview.NewApplication()
+	ui.SharedConfig.Application = application
+	if err := application.SetRoot(ui.NewWindow(size.Width, size.Height), true).Run(); err != nil {
 		panic(err)
 	}
 }
