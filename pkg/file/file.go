@@ -19,7 +19,7 @@ func MoveFile(from, to string) error {
 }
 
 func MakeFile(path string) error {
-	if fileExists(path) {
+	if FileExists(path) {
 		return fmt.Errorf("%s is already exists", path)
 	}
 	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE, 0644)
