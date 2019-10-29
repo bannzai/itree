@@ -55,7 +55,8 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 		}).
 		AddButton("Cancel", func() {
 			closeForm()
-		})
+		}).
+		SetCancelFunc(closeForm)
 
 	window.Root.AddAndSwitchToPage(formView.name(), formView.view(), true)
 }

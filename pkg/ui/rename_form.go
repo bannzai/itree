@@ -60,7 +60,8 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 		}).
 		AddButton("Cancel", func() {
 			closeForm()
-		})
+		}).
+		SetCancelFunc(closeForm)
 
 	window.Root.AddAndSwitchToPage(form.name(), form.view(), true)
 }
