@@ -29,6 +29,5 @@ func MakeFile(path string) error {
 	if err != nil {
 		return errors.Wrapf(err, "New file error. path for  %s", path)
 	}
-	defer file.Close()
-	return nil
+	return file.Close()
 }
