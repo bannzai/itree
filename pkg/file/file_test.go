@@ -40,7 +40,14 @@ func TestMoveFile(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-	// TODO: Add test cases.
+		{
+			name: "successfully move file",
+			args: args{
+				from: pathForCreateTemporaryFile(t),
+				to:   temporaryFilePath(t),
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

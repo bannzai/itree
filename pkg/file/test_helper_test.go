@@ -1,11 +1,12 @@
 package file
 
 import (
+	"fmt"
+	"io/ioutil"
 	"path/filepath"
 	"runtime"
 	"testing"
-
-	"github.com/google/uuid"
+	"time"
 )
 
 func currentFilePath(t *testing.T) string {
@@ -21,9 +22,20 @@ func currentDirectoryPath(t *testing.T) string {
 }
 
 func temporaryDirectoryPath(t *testing.T) string {
-	uuid, err := uuid.NewRandom()
+	return filepath.Join("/tmp", fmt.Sprintf("itreetest+%s_%d", t.Name(), time.Now().Unix()))
+}
+
+func pathForCreateTemporaryFile(t *testing.T) string {
+	file, err := ioutil.TempFile("/tmp", fmt.Sprintf("itreetest+%s_%d", t.Name(), time.Now().Unix()))
 	if err != nil {
 		t.Error(err)
 	}
-	return filepath.Join("/tmp", "itreetest+"+uuid.String())
+	if err := file.Close(); err != nil {
+		t.Error(err)
+	}
+	return file.Name()
+}
+
+func temporaryFilePath(t *testing.T) string {
+	return temporaryDirectoryPath(t)
 }
