@@ -31,7 +31,7 @@ func temporaryDirectoryPath(t *testing.T) string {
 	return filepath.Join("/tmp", fmt.Sprintf("itreetest+%s-%s_%d", t.Name(), uuid.String(), time.Now().Unix()))
 }
 
-func pathForCreateTemporaryFile(t *testing.T) string {
+func pathForCreatedTemporaryFile(t *testing.T) string {
 	uuid, err := uuid.NewRandom()
 	if err != nil {
 		t.Error(err)

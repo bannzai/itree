@@ -50,10 +50,18 @@ func TestMoveFile(t *testing.T) {
 		{
 			name: "successfully move file",
 			args: args{
-				from: pathForCreateTemporaryFile(t),
+				from: pathForCreatedTemporaryFile(t),
 				to:   temporaryFilePath(t),
 			},
 			wantErr: false,
+		},
+		{
+			name: "when to path is already exists",
+			args: args{
+				from: pathForCreatedTemporaryFile(t),
+				to:   currentDirectoryPath(t) + "/testdata/testfile.go",
+			},
+			wantErr: true,
 		},
 		{
 			name: "when from path is not exists",
