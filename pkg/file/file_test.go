@@ -1,6 +1,8 @@
 package file
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestFileExists(t *testing.T) {
 	type args struct {
@@ -11,7 +13,13 @@ func TestFileExists(t *testing.T) {
 		args args
 		want bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "testdata/testfile.go is exists",
+			args: args{
+				filename: currentDirectoryPath(t) + "/testdata/testfile.go",
+			},
+			want: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -32,7 +40,7 @@ func TestMoveFile(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+	// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -52,7 +60,7 @@ func TestMakeFile(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+	// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

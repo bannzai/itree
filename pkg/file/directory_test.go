@@ -2,8 +2,6 @@ package file
 
 import (
 	"testing"
-
-	"github.com/bannzai/itree/pkg/testutil"
 )
 
 func TestMakeDirectory(t *testing.T) {
@@ -18,14 +16,14 @@ func TestMakeDirectory(t *testing.T) {
 		{
 			name: "successfully MakeDirectory",
 			args: args{
-				path: testutil.TemporaryDirectoryPath(t),
+				path: temporaryDirectoryPath(t),
 			},
 			wantErr: false,
 		},
 		{
 			name: "directory is already exists",
 			args: args{
-				path: testutil.CurrentDirectoryPath(t) + "/testdata",
+				path: currentDirectoryPath(t) + "/testdata",
 			},
 			wantErr: true,
 		},
