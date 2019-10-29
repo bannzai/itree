@@ -20,6 +20,13 @@ func TestFileExists(t *testing.T) {
 			},
 			want: true,
 		},
+		{
+			name: "testdata/_testfile.go is not exists",
+			args: args{
+				filename: currentDirectoryPath(t) + "/testdata/_testfile.go",
+			},
+			want: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
