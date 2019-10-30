@@ -20,7 +20,7 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 	form := formView.form()
 
 	closeForm := func() {
-		window.Transition.RemovePage(formView.name())
+		window.transition.RemovePage(formView.name())
 	}
 
 	var directoryNode *tview.TreeNode
@@ -59,5 +59,5 @@ func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tvie
 		SetCancelFunc(closeForm)
 
 	grid := NewFormLayout(form, errorField)
-	window.Transition.AddAndSwitchToPage(formView.name(), grid, true)
+	window.transition.AddAndSwitchToPage(formView.name(), grid, true)
 }

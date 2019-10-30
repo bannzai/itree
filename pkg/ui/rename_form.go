@@ -25,7 +25,7 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 	form := RenameForm{tview.NewForm()}
 
 	closeForm := func() {
-		window.Transition.RemovePage(form.name())
+		window.transition.RemovePage(form.name())
 	}
 
 	nodeReference := extractNodeReference(node)
@@ -66,6 +66,6 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 		SetCancelFunc(closeForm)
 
 	grid := NewFormLayout(form, errorField)
-	window.Transition.AddAndSwitchToPage(form.name(), grid, true)
+	window.transition.AddAndSwitchToPage(form.name(), grid, true)
 
 }

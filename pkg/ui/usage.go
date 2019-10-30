@@ -25,7 +25,7 @@ func NewUsage(window *Window) Usage {
 		AddItem("appear information for current node", "", 'i', nil)
 
 	list.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		window.Transition.RemovePage(usage.name())
+		window.transition.RemovePage(usage.name())
 		return nil
 	})
 

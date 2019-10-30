@@ -5,7 +5,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-type Transition interface {
+type transition interface {
 	tview.Primitive
 	AddAndSwitchToPage(name string, item tview.Primitive, resize bool) *tview.Pages
 	RemovePage(name string) *tview.Pages
@@ -13,13 +13,13 @@ type Transition interface {
 
 type Window struct {
 	*Root
-	Transition
+	transition
 }
 
 func NewWindow(width, height int) *Window {
 	window := &Window{}
 	window.Root = NewRoot(window)
-	window.Transition = NewPages(
+	window.transition = NewPages(
 		window.Root,
 	)
 	window.SetRect(0, 0, width, height)
@@ -28,23 +28,23 @@ func NewWindow(width, height int) *Window {
 
 // Confirm for tview.Primitive
 func (window Window) Draw(screen tcell.Screen) {
-	window.Transition.Draw(screen)
+	window.transition.Draw(screen)
 }
 func (window Window) GetRect() (x int, y int, width int, height int) {
-	return window.Transition.GetRect()
+	return window.transition.GetRect()
 }
 func (window Window) SetRect(x, y, width, height int) {
-	window.Transition.SetRect(x, y, width, height)
+	window.transition.SetRect(x, y, width, height)
 }
 func (window Window) InputHandler() func(event *tcell.EventKey, setFocus func(p tview.Primitive)) {
-	return window.Transition.InputHandler()
+	return window.transition.InputHandler()
 }
 func (window Window) Focus(delegate func(p tview.Primitive)) {
-	window.Transition.Focus(delegate)
+	window.transition.Focus(delegate)
 }
 func (window Window) Blur() {
-	window.Transition.Blur()
+	window.transition.Blur()
 }
 func (window Window) GetFocusable() tview.Focusable {
-	return window.Transition.GetFocusable()
+	return window.transition.GetFocusable()
 }
