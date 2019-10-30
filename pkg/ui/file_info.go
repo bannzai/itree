@@ -14,8 +14,14 @@ type FileInfo struct {
 }
 
 func NewFileInfo(path string) FileInfo {
+	textView := tview.NewTextView().
+		SetText(buildFileInfomation(path))
+	textView.
+		SetBorder(true).
+		SetTitle("File Info")
+
 	fileInfo := FileInfo{
-		tview.NewTextView().SetText(buildFileInfomation(path)),
+		View: textView,
 	}
 
 	return fileInfo
