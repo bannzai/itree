@@ -10,27 +10,15 @@ import (
 	"github.com/rivo/tview"
 )
 
+type switcher interface {
+	SwitchRenameForm(node *tview.TreeNode)
+	SwitchAddFileForm(*tview.TreeNode)
+	SwitchAddDirectoryForm(*tview.TreeNode)
+}
+
 type Tree struct {
 	*tview.TreeView
 	switcher
-}
-
-type nodeReference struct {
-	path       string
-	isDir      bool
-	parentNode *tview.TreeNode
-}
-
-func (reference *nodeReference) setPath(path string) {
-	reference.path = path
-}
-
-func newNodeReference(path string, isDir bool, parentNode *tview.TreeNode) *nodeReference {
-	return &nodeReference{
-		path:       path,
-		isDir:      isDir,
-		parentNode: parentNode,
-	}
 }
 
 func NewTree(switcher switcher) Tree {
