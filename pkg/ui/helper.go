@@ -7,8 +7,6 @@ import (
 	"github.com/rivo/tview"
 )
 
-const rootDir = "./"
-
 func absolutePath(node nodeReference) string {
 	relativePath := node.path
 	absolutePath, err := filepath.Abs(relativePath)
@@ -26,11 +24,11 @@ func createTreeNode(fileName string, isDir bool, parent *tview.TreeNode) *tview.
 	var parentPath string
 
 	if parent == nil {
-		parentPath = rootDir
+		parentPath = SharedConfig.RootPath
 	} else {
 		reference, ok := parent.GetReference().(*nodeReference)
 		if !ok {
-			parentPath = rootDir
+			parentPath = SharedConfig.RootPath
 		} else {
 			parentPath = reference.path
 		}

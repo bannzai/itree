@@ -16,6 +16,7 @@ type Tree struct {
 }
 
 func NewTree(window *Window) Tree {
+	rootDir := SharedConfig.RootPath
 	root := tview.NewTreeNode(rootDir).
 		SetColor(tcell.ColorRed).
 		SetReference(newNodeReference(rootDir, true, nil))
