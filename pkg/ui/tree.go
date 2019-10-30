@@ -3,6 +3,7 @@ package ui
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os/exec"
 
 	"github.com/atotto/clipboard"
@@ -105,7 +106,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	case 'o':
 		path := extractNodeReference(tree.GetCurrentNode()).path
 		if err := exec.Command("open", path).Run(); err != nil {
-			panic(err)
+			log.Fatal(fmt.Errorf("open %s is error, raw error %w", path, err))
 		}
 	case 'n':
 		tree.switcher.SwitchAddFileForm(tree.GetCurrentNode())
