@@ -29,7 +29,6 @@ func (form addFileForm) decideButtonTitle() string {
 }
 
 func (window *Window) SwitchAddFileForm(selectedNode *tview.TreeNode) {
-
 	form := addFileForm{tview.NewForm()}
 	window.switchAddFileForm(
 		form,
