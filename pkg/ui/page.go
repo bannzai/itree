@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"github.com/gdamore/tcell"
 	"github.com/rivo/tview"
 )
 
@@ -12,7 +11,6 @@ type Page interface {
 
 type Pages struct {
 	*tview.Pages
-	Root
 }
 
 func NewPages(root Root, pages ...Page) Pages {
@@ -23,29 +21,5 @@ func NewPages(root Root, pages ...Page) Pages {
 	}
 	return Pages{
 		Pages: pagesView,
-		Root:  root,
 	}
-}
-func (view Pages) Draw(screen tcell.Screen) {
-	view.Pages.Draw(screen)
-}
-
-func (view Pages) GetRect() (x int, y int, width int, height int) {
-	return view.Pages.GetRect()
-}
-
-func (view Pages) SetRect(x, y, width, height int) {
-	view.Pages.SetRect(x, y, width, height)
-}
-func (view Pages) InputHandler() func(event *tcell.EventKey, setFocus func(p tview.Primitive)) {
-	return view.Pages.InputHandler()
-}
-func (view Pages) Focus(delegate func(p tview.Primitive)) {
-	view.Pages.Focus(delegate)
-}
-func (view Pages) Blur() {
-	view.Pages.Blur()
-}
-func (view Pages) GetFocusable() tview.Focusable {
-	return view.Pages.GetFocusable()
 }

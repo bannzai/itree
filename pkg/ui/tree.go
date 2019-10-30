@@ -14,6 +14,7 @@ type switcher interface {
 	SwitchRenameForm(node *tview.TreeNode)
 	SwitchAddFileForm(*tview.TreeNode)
 	SwitchAddDirectoryForm(*tview.TreeNode)
+	ShowFileInfo(path string)
 }
 
 type Tree struct {
@@ -108,5 +109,8 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	case 'e':
 		nodeReference := extractNodeReference(tree.GetCurrentNode())
 		NewEditor().Launch(nodeReference.path)
+	case 'i':
+		nodeReference := extractNodeReference(tree.GetCurrentNode())
+		tree.switcher.ShowFileInfo(nodeReference.path)
 	}
 }
