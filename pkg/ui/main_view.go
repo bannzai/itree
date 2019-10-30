@@ -9,6 +9,8 @@ type MainView struct {
 	*tview.Grid
 	FileInfo
 	Feedback
+
+	isDisplayedFeedback bool
 }
 
 func NewMainView(window *Window) *MainView {
@@ -33,16 +35,27 @@ func (view *MainView) ShowFileInfo(path string) {
 }
 
 func (view *MainView) ShowFeedback(text string) {
-	if view.Feedback.View != nil {
-		view.RemoveItem(view.Feedback.View)
-	}
+	view.RemoveFeedback()
 
 	feedback := NewFeedback(text)
-	view.AddItem(feedback.View, 1, 0, 1, 2, 0, 20, false)
+	view.AddItem(feedback.View, 1, 0, 1, 2, 0, 20, true)
 	view.Feedback = feedback
 
 	feedback.View.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		view.RemoveItem(view.Feedback.View)
 		return nil
 	})
+
+	view.isDisplayedFeedback = true
+}
+
+func (view *MainView) RemoveFeedback() {
+	if view.Feedback.View != nil {
+		view.RemoveItem(view.Feedback.View)
+	}
+	view.isDisplayedFeedback = false
+}
+
+func (view *MainView) displayedFeedback() bool {
+	return view.isDisplayedFeedback
 }

@@ -9,6 +9,8 @@ type Root interface {
 	tview.Primitive
 	ShowFileInfo(path string)
 	ShowFeedback(text string)
+	RemoveFeedback()
+	displayedFeedback() bool
 }
 
 type Transition interface {

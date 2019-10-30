@@ -17,6 +17,8 @@ type switcher interface {
 	SwitchUsage()
 	ShowFileInfo(path string)
 	ShowFeedback(text string)
+	RemoveFeedback()
+	displayedFeedback() bool
 }
 
 type Tree struct {
@@ -58,6 +60,10 @@ func NewTree(switcher switcher) Tree {
 	})
 
 	tree.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if tree.switcher.displayedFeedback() {
+			tree.switcher.RemoveFeedback()
+			return nil
+		}
 		tree.handleEventWithKey(event)
 		return event
 	})
@@ -100,6 +106,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
 			return
 		}
+		tree.switcher.ShowFeedback(fmt.Sprintf("copy to clipboard %s", path))
 	case 'r':
 		tree.switcher.SwitchRenameForm(tree.GetCurrentNode())
 	case 'o':
