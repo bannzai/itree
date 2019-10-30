@@ -10,23 +10,12 @@ import (
 	"github.com/rivo/tview"
 )
 
-type switcher interface {
-	SwitchRenameForm(node *tview.TreeNode)
-	SwitchAddFileForm(*tview.TreeNode)
-	SwitchAddDirectoryForm(*tview.TreeNode)
-	SwitchUsage()
-	ShowFileInfo(path string)
-	ShowFeedback(text string)
-	RemoveFeedback()
-	displayedFeedback() bool
-}
-
 type Tree struct {
 	*tview.TreeView
-	switcher
+	window *Window
 }
 
-func NewTree(switcher switcher) Tree {
+func NewTree(window *Window) Tree {
 	root := tview.NewTreeNode(rootDir).
 		SetColor(tcell.ColorRed).
 		SetReference(newNodeReference(rootDir, true, nil))
@@ -35,7 +24,7 @@ func NewTree(switcher switcher) Tree {
 		TreeView: tview.NewTreeView().
 			SetRoot(root).
 			SetCurrentNode(root),
-		switcher: switcher,
+		window: window,
 	}
 
 	tree.addNode(root, rootDir)
@@ -60,8 +49,8 @@ func NewTree(switcher switcher) Tree {
 	})
 
 	tree.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		if tree.switcher.displayedFeedback() {
-			tree.switcher.RemoveFeedback()
+		if tree.window.displayedFeedback() {
+			tree.window.RemoveFeedback()
 			return nil
 		}
 		tree.handleEventWithKey(event)
@@ -106,25 +95,25 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
 			return
 		}
-		tree.switcher.ShowFeedback(fmt.Sprintf("copy to clipboard %s", path))
+		tree.window.ShowFeedback(fmt.Sprintf("copy to clipboard %s", path))
 	case 'r':
-		tree.switcher.SwitchRenameForm(tree.GetCurrentNode())
+		tree.window.SwitchRenameForm(tree.GetCurrentNode())
 	case 'o':
 		path := extractNodeReference(tree.GetCurrentNode()).path
 		if err := exec.Command("open", path).Run(); err != nil {
 			panic(fmt.Errorf("open %s is error, raw error %w", path, err))
 		}
 	case 'n':
-		tree.switcher.SwitchAddFileForm(tree.GetCurrentNode())
+		tree.window.SwitchAddFileForm(tree.GetCurrentNode())
 	case 'N':
-		tree.switcher.SwitchAddDirectoryForm(tree.GetCurrentNode())
+		tree.window.SwitchAddDirectoryForm(tree.GetCurrentNode())
 	case 'e':
 		nodeReference := extractNodeReference(tree.GetCurrentNode())
 		NewEditor().Launch(nodeReference.path)
 	case 'i':
 		nodeReference := extractNodeReference(tree.GetCurrentNode())
-		tree.switcher.ShowFileInfo(nodeReference.path)
+		tree.window.ShowFileInfo(nodeReference.path)
 	case '?':
-		tree.switcher.SwitchUsage()
+		tree.window.SwitchUsage()
 	}
 }

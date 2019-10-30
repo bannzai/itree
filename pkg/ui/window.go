@@ -5,14 +5,6 @@ import (
 	"github.com/rivo/tview"
 )
 
-type Root interface {
-	tview.Primitive
-	ShowFileInfo(path string)
-	ShowFeedback(text string)
-	RemoveFeedback()
-	displayedFeedback() bool
-}
-
 type Transition interface {
 	tview.Primitive
 	AddAndSwitchToPage(name string, item tview.Primitive, resize bool) *tview.Pages
@@ -20,15 +12,15 @@ type Transition interface {
 }
 
 type Window struct {
-	Root
+	*MainView
 	Transition
 }
 
 func NewWindow(width, height int) *Window {
 	window := &Window{}
-	window.Root = NewMainView(window)
+	window.MainView = NewMainView(window)
 	window.Transition = NewPages(
-		window.Root,
+		window.MainView,
 	)
 	window.SetRect(0, 0, width, height)
 	return window

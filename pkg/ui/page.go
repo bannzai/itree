@@ -13,7 +13,7 @@ type Pages struct {
 	*tview.Pages
 }
 
-func NewPages(root Root, pages ...Page) Pages {
+func NewPages(root *MainView, pages ...Page) Pages {
 	pagesView := tview.NewPages()
 	pagesView.AddPage("main", root, true, true)
 	for _, page := range pages {
