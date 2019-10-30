@@ -17,7 +17,7 @@ func NewMainView(window *Window) *MainView {
 	tree := NewTree(window)
 	view := &MainView{
 		Grid: tview.NewGrid().
-			SetRows(0).
+			SetRows(0, 5).
 			SetColumns(30, 0).
 			AddItem(tree, 0, 0, 1, 1, 0, 0, true),
 	}
@@ -38,7 +38,7 @@ func (view *MainView) ShowFeedback(text string) {
 	view.RemoveFeedback()
 
 	feedback := NewFeedback(text)
-	view.AddItem(feedback.View, 1, 0, 1, 2, 0, 20, true)
+	view.AddItem(feedback.View, 1, 0, 1, 2, 0, 0, true)
 	view.Feedback = feedback
 
 	feedback.View.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
