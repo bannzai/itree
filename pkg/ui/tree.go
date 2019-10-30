@@ -16,6 +16,7 @@ type switcher interface {
 	SwitchAddDirectoryForm(*tview.TreeNode)
 	SwitchUsage()
 	ShowFileInfo(path string)
+	ShowFeedback(text string)
 }
 
 type Tree struct {
