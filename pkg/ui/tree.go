@@ -34,9 +34,10 @@ func newNodeReference(path string, isDir bool, parentNode *tview.TreeNode) *node
 }
 
 func NewTree(switcher switcher) Tree {
-	rootDir := "./"
 	root := tview.NewTreeNode(rootDir).
-		SetColor(tcell.ColorRed)
+		SetColor(tcell.ColorRed).
+		SetReference(newNodeReference(rootDir, true, nil))
+
 	tree := Tree{
 		TreeView: tview.NewTreeView().
 			SetRoot(root).
