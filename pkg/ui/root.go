@@ -5,17 +5,17 @@ import (
 	"github.com/rivo/tview"
 )
 
-type Root struct {
+type root struct {
 	*tview.Grid
-	FileInfo
-	Feedback
+	fileInfo
+	feedback
 
 	isDisplayedFeedback bool
 }
 
-func NewRoot(window *Window) *Root {
-	tree := NewTree(window)
-	view := &Root{
+func newRoot(window *Window) *root {
+	tree := newTree(window)
+	view := &root{
 		Grid: tview.NewGrid().
 			SetRows(0, 5).
 			SetColumns(30, 0).
@@ -24,38 +24,38 @@ func NewRoot(window *Window) *Root {
 	return view
 }
 
-func (view *Root) ShowFileInfo(path string) {
-	if view.FileInfo.View != nil {
-		view.RemoveItem(view.FileInfo.View)
+func (view *root) ShowFileInfo(path string) {
+	if view.fileInfo.view != nil {
+		view.RemoveItem(view.fileInfo.view)
 	}
 
-	fileInfo := NewFileInfo(path)
-	view.AddItem(fileInfo.View, 0, 1, 1, 1, 0, 0, false)
-	view.FileInfo = fileInfo
+	fileInfo := newFileInfo(path)
+	view.AddItem(fileInfo.view, 0, 1, 1, 1, 0, 0, false)
+	view.fileInfo = fileInfo
 }
 
-func (view *Root) ShowFeedback(text string) {
+func (view *root) ShowFeedback(text string) {
 	view.RemoveFeedback()
 
-	feedback := NewFeedback(text)
-	view.AddItem(feedback.View, 1, 0, 1, 2, 0, 0, true)
-	view.Feedback = feedback
+	feedback := newFeedback(text)
+	view.AddItem(feedback.view, 1, 0, 1, 2, 0, 0, true)
+	view.feedback = feedback
 
-	feedback.View.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		view.RemoveItem(view.Feedback.View)
+	feedback.view.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		view.RemoveItem(view.feedback.view)
 		return nil
 	})
 
 	view.isDisplayedFeedback = true
 }
 
-func (view *Root) RemoveFeedback() {
-	if view.Feedback.View != nil {
-		view.RemoveItem(view.Feedback.View)
+func (view *root) RemoveFeedback() {
+	if view.feedback.view != nil {
+		view.RemoveItem(view.feedback.view)
 	}
 	view.isDisplayedFeedback = false
 }
 
-func (view *Root) displayedFeedback() bool {
+func (view *root) displayedFeedback() bool {
 	return view.isDisplayedFeedback
 }

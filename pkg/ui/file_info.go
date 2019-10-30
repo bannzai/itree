@@ -9,19 +9,19 @@ import (
 	"github.com/rivo/tview"
 )
 
-type FileInfo struct {
-	View *tview.TextView
+type fileInfo struct {
+	view *tview.TextView
 }
 
-func NewFileInfo(path string) FileInfo {
+func newFileInfo(path string) fileInfo {
 	textView := tview.NewTextView().
 		SetText(buildFileInfomation(path))
 	textView.
 		SetBorder(true).
 		SetTitle("File Info")
 
-	fileInfo := FileInfo{
-		View: textView,
+	fileInfo := fileInfo{
+		view: textView,
 	}
 
 	return fileInfo

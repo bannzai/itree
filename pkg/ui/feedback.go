@@ -2,18 +2,18 @@ package ui
 
 import "github.com/rivo/tview"
 
-type Feedback struct {
-	View *tview.TextView
+type feedback struct {
+	view *tview.TextView
 }
 
-func NewFeedback(text string) Feedback {
+func newFeedback(text string) feedback {
 	textView := tview.NewTextView().
 		SetText(text)
 	textView.
 		SetBorder(true)
 
-	feedback := Feedback{
-		View: textView,
+	feedback := feedback{
+		view: textView,
 	}
 
 	return feedback

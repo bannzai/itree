@@ -10,18 +10,18 @@ import (
 	"github.com/rivo/tview"
 )
 
-type Tree struct {
+type tree struct {
 	*tview.TreeView
 	window *Window
 }
 
-func NewTree(window *Window) Tree {
+func newTree(window *Window) tree {
 	rootDir := SharedConfig.RootPath
 	root := tview.NewTreeNode(rootDir).
 		SetColor(tcell.ColorRed).
 		SetReference(newNodeReference(rootDir, true, nil))
 
-	tree := Tree{
+	tree := tree{
 		TreeView: tview.NewTreeView().
 			SetRoot(root).
 			SetCurrentNode(root),
@@ -61,15 +61,15 @@ func NewTree(window *Window) Tree {
 	return tree
 }
 
-func (tree Tree) name() string {
+func (tree tree) name() string {
 	return nameOfTree
 }
 
-func (tree Tree) view() tview.Primitive {
+func (tree tree) view() tview.Primitive {
 	return tree.TreeView
 }
 
-func (tree *Tree) addNode(directoryNode *tview.TreeNode, path string) {
+func (tree *tree) addNode(directoryNode *tview.TreeNode, path string) {
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
 		panic(err)
@@ -80,7 +80,7 @@ func (tree *Tree) addNode(directoryNode *tview.TreeNode, path string) {
 	}
 }
 
-func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
+func (tree *tree) handleEventWithKey(event *tcell.EventKey) {
 	switch event.Rune() {
 	case 'c':
 		nodeReference := extractNodeReference(tree.GetCurrentNode())

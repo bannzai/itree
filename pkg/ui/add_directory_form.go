@@ -5,31 +5,31 @@ import (
 	"github.com/rivo/tview"
 )
 
-type AddDirectoryForm struct {
+type addDirectoryForm struct {
 	*tview.Form
 }
 
-func (form AddDirectoryForm) form() *tview.Form {
+func (form addDirectoryForm) form() *tview.Form {
 	return form.Form
 }
-func (form AddDirectoryForm) isDir() bool {
+func (form addDirectoryForm) isDir() bool {
 	return true
 }
-func (form AddDirectoryForm) makeFunction(path string) error {
+func (form addDirectoryForm) makeFunction(path string) error {
 	return file.MakeDirectory(path)
 }
-func (AddDirectoryForm) name() string {
+func (addDirectoryForm) name() string {
 	return nameOfAddForm
 }
-func (form AddDirectoryForm) view() tview.Primitive {
+func (form addDirectoryForm) view() tview.Primitive {
 	return form.Form
 }
-func (form AddDirectoryForm) decideButtonTitle() string {
+func (form addDirectoryForm) decideButtonTitle() string {
 	return "Add Directory"
 }
 
 func (window *Window) SwitchAddDirectoryForm(selectedNode *tview.TreeNode) {
-	form := AddDirectoryForm{tview.NewForm()}
+	form := addDirectoryForm{tview.NewForm()}
 	window.switchAddFileForm(
 		form,
 		selectedNode,

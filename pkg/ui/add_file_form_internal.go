@@ -6,15 +6,15 @@ import (
 	"github.com/rivo/tview"
 )
 
-type addFileForm interface {
-	Page
+type addForm interface {
+	page
 	form() *tview.Form
 	isDir() bool
 	makeFunction(path string) error
 	decideButtonTitle() string
 }
 
-func (window *Window) switchAddFileForm(formView addFileForm, selectedNode *tview.TreeNode) {
+func (window *Window) switchAddFileForm(formView addForm, selectedNode *tview.TreeNode) {
 	const inputWidth = 100
 
 	form := formView.form()

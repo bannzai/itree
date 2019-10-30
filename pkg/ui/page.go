@@ -4,22 +4,22 @@ import (
 	"github.com/rivo/tview"
 )
 
-type Page interface {
+type page interface {
 	name() string
 	view() tview.Primitive
 }
 
-type Pages struct {
+type pages struct {
 	*tview.Pages
 }
 
-func NewPages(root *Root, pages ...Page) Pages {
+func newPages(root *root, pageViews ...page) pages {
 	pagesView := tview.NewPages()
 	pagesView.AddPage("main", root, true, true)
-	for _, page := range pages {
+	for _, page := range pageViews {
 		pagesView.AddPage(page.name(), page.view(), true, false)
 	}
-	return Pages{
+	return pages{
 		Pages: pagesView,
 	}
 }
