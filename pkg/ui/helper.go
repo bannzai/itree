@@ -53,5 +53,4 @@ func createTreeNode(fileName string, isDir bool, parent *tview.TreeNode) *tview.
 		).
 		SetSelectable(true).
 		SetColor(color)
-
 }
