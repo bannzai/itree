@@ -6,29 +6,31 @@ import (
 )
 
 type Usage struct {
-	*tview.TextView
+	*tview.List
 }
 
 func NewUsage(window *Window) Usage {
-	view := Usage{}
-	view.TextView = tview.NewTextView().
-		SetText(usage()).
-		SetDoneFunc(func(key tcell.Key) {
-			if key == tcell.KeyEnter {
-				window.RemovePage(view.name())
-			}
-		})
-	return view
-}
+	usage := Usage{}
+	list := tview.NewList().
+		ShowSecondaryText(false).
+		SetSelectedTextColor(tview.Styles.PrimaryTextColor).
+		SetSelectedBackgroundColor(tview.Styles.PrimitiveBackgroundColor).
+		AddItem("Copy selected node file path", "", 'c', nil).
+		AddItem("Copy selected node absolute file path", "", 'C', nil).
+		AddItem("Rename file node", "", 'r', nil).
+		AddItem("'$ open $FILE_PATH'", "", 'o', nil).
+		AddItem("New file", "", 'n', nil).
+		AddItem("New directory", "", 'N', nil).
+		AddItem("Open current node with $EDITOR. Default is vim", "", 'e', nil).
+		AddItem("appear information for current node", "", 'i', nil)
 
-func usage() string {
-	return `USAGE 
-'c' copy selected node file path, 'C' copy selected node absolute file path. 
-'r' rename file node. o '$ open $FILE_PATH'
-'n' new file, 'N' new directory, under the selected node.
-'e' open current node with $EDITOR. default is vim. 
-'i' appear information for current node
-	`
+	list.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		window.Transition.RemovePage(usage.name())
+		return nil
+	})
+
+	usage.List = list
+	return usage
 }
 
 func (window *Window) SwitchUsage() {
@@ -41,5 +43,5 @@ func (Usage) name() string {
 }
 
 func (usage Usage) view() tview.Primitive {
-	return usage.TextView
+	return usage.List
 }
