@@ -1,22 +1,49 @@
 package ui
 
-import "github.com/rivo/tview"
+import (
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	"github.com/rivo/tview"
+)
 
 type FileInfo struct {
-	*tview.List
+	View *tview.TextView
 }
-
-const (
-	// FIXME: How to set empty rune
-	noShortcut      = '≠'
-	noSecondaryText = ""
-)
 
 func NewFileInfo(path string) FileInfo {
 	fileInfo := FileInfo{
-		tview.NewList().
-			AddItem("", noSecondaryText, noShortcut, nil),
+		tview.NewTextView().SetText(buildFileInfomation(path)),
 	}
 
 	return fileInfo
+}
+
+func buildFileInfomation(path string) string {
+	fileStat, err := os.Stat(path)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return fmt.Sprintf(`
+	File Name     : %s
+	Size          : %d bytes
+	Permissions   : %d
+	Last Modified : %s
+	Is Directory  : %t
+	`,
+		fileStat.Name(),
+		fileStat.Size(),
+		fileStat.Mode(),
+		formatLastModified(fileStat.ModTime()),
+		fileStat.IsDir(),
+	)
+}
+
+func formatLastModified(time time.Time) string {
+	layout := "2006-01-02 15::03::04 (Mon)"
+	return time.Format(layout)
 }
