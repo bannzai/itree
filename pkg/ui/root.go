@@ -5,7 +5,7 @@ import (
 	"github.com/rivo/tview"
 )
 
-type MainView struct {
+type Root struct {
 	*tview.Grid
 	FileInfo
 	Feedback
@@ -13,9 +13,9 @@ type MainView struct {
 	isDisplayedFeedback bool
 }
 
-func NewMainView(window *Window) *MainView {
+func NewRoot(window *Window) *Root {
 	tree := NewTree(window)
-	view := &MainView{
+	view := &Root{
 		Grid: tview.NewGrid().
 			SetRows(0, 5).
 			SetColumns(30, 0).
@@ -24,7 +24,7 @@ func NewMainView(window *Window) *MainView {
 	return view
 }
 
-func (view *MainView) ShowFileInfo(path string) {
+func (view *Root) ShowFileInfo(path string) {
 	if view.FileInfo.View != nil {
 		view.RemoveItem(view.FileInfo.View)
 	}
@@ -34,7 +34,7 @@ func (view *MainView) ShowFileInfo(path string) {
 	view.FileInfo = fileInfo
 }
 
-func (view *MainView) ShowFeedback(text string) {
+func (view *Root) ShowFeedback(text string) {
 	view.RemoveFeedback()
 
 	feedback := NewFeedback(text)
@@ -49,13 +49,13 @@ func (view *MainView) ShowFeedback(text string) {
 	view.isDisplayedFeedback = true
 }
 
-func (view *MainView) RemoveFeedback() {
+func (view *Root) RemoveFeedback() {
 	if view.Feedback.View != nil {
 		view.RemoveItem(view.Feedback.View)
 	}
 	view.isDisplayedFeedback = false
 }
 
-func (view *MainView) displayedFeedback() bool {
+func (view *Root) displayedFeedback() bool {
 	return view.isDisplayedFeedback
 }

@@ -12,15 +12,15 @@ type Transition interface {
 }
 
 type Window struct {
-	*MainView
+	*Root
 	Transition
 }
 
 func NewWindow(width, height int) *Window {
 	window := &Window{}
-	window.MainView = NewMainView(window)
+	window.Root = NewRoot(window)
 	window.Transition = NewPages(
-		window.MainView,
+		window.Root,
 	)
 	window.SetRect(0, 0, width, height)
 	return window
