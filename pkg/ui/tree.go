@@ -88,6 +88,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
 			return
 		}
+		tree.window.ShowFeedback(fmt.Sprintf("copy relative path to clipboard %s", path))
 	case 'C':
 		nodeReference := extractNodeReference(tree.GetCurrentNode())
 		path := absolutePath(*nodeReference)
@@ -95,7 +96,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
 			return
 		}
-		tree.window.ShowFeedback(fmt.Sprintf("copy to clipboard %s", path))
+		tree.window.ShowFeedback(fmt.Sprintf("copy absolute path to clipboard %s", path))
 	case 'r':
 		tree.window.SwitchRenameForm(tree.GetCurrentNode())
 	case 'o':
@@ -103,6 +104,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 		if err := exec.Command("open", path).Run(); err != nil {
 			panic(fmt.Errorf("open %s is error, raw error %w", path, err))
 		}
+		tree.window.ShowFeedback(fmt.Sprintf("$ open %s", path))
 	case 'n':
 		tree.window.SwitchAddFileForm(tree.GetCurrentNode())
 	case 'N':
