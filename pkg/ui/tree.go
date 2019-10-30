@@ -14,6 +14,7 @@ type switcher interface {
 	SwitchRenameForm(node *tview.TreeNode)
 	SwitchAddFileForm(*tview.TreeNode)
 	SwitchAddDirectoryForm(*tview.TreeNode)
+	SwitchUsage()
 	ShowFileInfo(path string)
 }
 
@@ -60,10 +61,6 @@ func NewTree(switcher switcher) Tree {
 		return event
 	})
 
-	tree.InputHandler()
-	tree.WrapInputHandler(func(event *tcell.EventKey, setFocus func(p tview.Primitive)) {
-	})
-
 	return tree
 }
 
@@ -90,6 +87,13 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	switch event.Rune() {
 	case 'c':
 		nodeReference := extractNodeReference(tree.GetCurrentNode())
+		path := nodeReference.path
+		if err := clipboard.WriteAll(path); err != nil {
+			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
+			return
+		}
+	case 'C':
+		nodeReference := extractNodeReference(tree.GetCurrentNode())
 		path := absolutePath(*nodeReference)
 		if err := clipboard.WriteAll(path); err != nil {
 			fmt.Printf("clipboard.WriteAll(%s) is error. error is %v", path, err)
@@ -112,5 +116,7 @@ func (tree *Tree) handleEventWithKey(event *tcell.EventKey) {
 	case 'i':
 		nodeReference := extractNodeReference(tree.GetCurrentNode())
 		tree.switcher.ShowFileInfo(nodeReference.path)
+	case '?':
+		tree.switcher.SwitchUsage()
 	}
 }

@@ -4,4 +4,5 @@ const (
 	nameOfRenameForm = "RenameForm"
 	nameOfAddForm    = "AddForm"
 	nameOfTree       = "Tree"
+	nameOfUsage      = "Usage"
 )
