@@ -53,6 +53,9 @@ func newTree(window *Window) tree {
 			tree.window.RemoveFeedback()
 			return nil
 		}
+		if tree.window.displayedSearch() {
+			return nil
+		}
 		tree.handleEventWithKey(event)
 		return event
 	})

@@ -11,8 +11,6 @@ type root struct {
 	feedback
 	search
 	tree
-
-	isDisplayedFeedback bool
 }
 
 func newRoot(window *Window) *root {
@@ -48,15 +46,12 @@ func (view *root) ShowFeedback(text string) {
 		view.RemoveItem(view.feedback.view)
 		return nil
 	})
-
-	view.isDisplayedFeedback = true
 }
 
 func (view *root) RemoveFeedback() {
 	if view.feedback.view != nil {
 		view.RemoveItem(view.feedback.view)
 	}
-	view.isDisplayedFeedback = false
 }
 
 func (view *root) showSeach() {
@@ -70,5 +65,9 @@ func (view *root) showSeach() {
 }
 
 func (view *root) displayedFeedback() bool {
-	return view.isDisplayedFeedback
+	return view.feedback.view != nil
+}
+
+func (view *root) displayedSearch() bool {
+	return view.search.view != nil
 }
