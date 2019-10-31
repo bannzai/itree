@@ -62,7 +62,6 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 					childPath := filepath.Join(editedPath, basename)
 					childReference.path = childPath
 					child.SetReference(childReference)
-					child.SetText(childPath)
 				}
 			}
 
