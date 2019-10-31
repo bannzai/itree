@@ -9,6 +9,8 @@ type root struct {
 	*tview.Grid
 	fileInfo
 	feedback
+	search
+	tree
 
 	isDisplayedFeedback bool
 }
@@ -21,6 +23,7 @@ func newRoot(window *Window) *root {
 			SetColumns(30, 0).
 			AddItem(tree, 0, 0, 1, 1, 0, 0, true),
 	}
+	view.tree = tree
 	return view
 }
 
@@ -54,6 +57,16 @@ func (view *root) RemoveFeedback() {
 		view.RemoveItem(view.feedback.view)
 	}
 	view.isDisplayedFeedback = false
+}
+
+func (view *root) showSeach() {
+	if view.search.view != nil {
+		view.RemoveItem(view.search.view)
+	}
+
+	search := newSearch(view.tree)
+	view.AddItem(search.view, 1, 0, 1, 2, 0, 0, true)
+	view.search = search
 }
 
 func (view *root) displayedFeedback() bool {
