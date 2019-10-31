@@ -12,7 +12,8 @@ import (
 
 type tree struct {
 	*tview.TreeView
-	window *Window
+	originalRootNode *tview.TreeNode
+	window           *Window
 }
 
 func newTree(window *Window) tree {
@@ -20,14 +21,12 @@ func newTree(window *Window) tree {
 	root := tview.NewTreeNode(rootDir).
 		SetColor(tcell.ColorRed).
 		SetReference(newNodeReference(rootDir, true, nil))
-
 	tree := tree{
 		TreeView: tview.NewTreeView().
 			SetRoot(root).
 			SetCurrentNode(root),
 		window: window,
 	}
-
 	tree.addNode(root, rootDir)
 
 	tree.SetSelectedFunc(func(node *tview.TreeNode) {
@@ -119,4 +118,16 @@ func (tree *tree) handleEventWithKey(event *tcell.EventKey) {
 	case '?':
 		tree.window.SwitchUsage()
 	}
+}
+
+func lastNodes(node *tview.TreeNode) []*tview.TreeNode {
+	nodes := []*tview.TreeNode{}
+	children := node.GetChildren()
+	if len(children) > 0 {
+		for _, child := range children {
+			nodes = append(nodes, lastNodes(child)...)
+		}
+		return nodes
+	}
+	return nodes
 }
