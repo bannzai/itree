@@ -58,7 +58,7 @@ func (window *Window) SwitchRenameForm(node *tview.TreeNode) {
 			if nodeReference.isDir {
 				for _, child := range node.GetChildren() {
 					childReference := extractNodeReference(child)
-					basename := filepath.Base(fromPath)
+					basename := filepath.Base(childReference.path)
 					childPath := filepath.Join(editedPath, basename)
 					childReference.path = childPath
 					child.SetReference(childReference)
