@@ -10,7 +10,7 @@ type search struct {
 	view *tview.InputField
 }
 
-func newSearch(tree tree, window *Window) search {
+func newSearch(tree *tree, window *Window) search {
 	search := search{
 		view: tview.
 			NewInputField(),
@@ -21,31 +21,37 @@ func newSearch(tree tree, window *Window) search {
 	copiedRootPointer := &copiedRoot
 	tree.addNodeAll(copiedRootPointer)
 	tree.expandAll(copiedRootPointer)
+	tree.setAllDisplayTextToPath(copiedRootPointer)
+	tree.SetRoot(copiedRootPointer)
+
+	onSearch := func(text string) {
+		tree.searchedText = text
+		nodes := searchTree(tree, text)
+		copiedRootPointer.SetChildren(nodes)
+	}
+
+	if len(tree.searchedText) > 0 {
+		onSearch(tree.searchedText)
+	}
 
 	search.
 		view.
 		SetLabel("/").
-		SetChangedFunc(func(text string) {
-			if len(text) > 0 {
-				tree.setAllDisplayTextToPath(copiedRootPointer)
-				tree.SetRoot(copiedRootPointer)
-				nodes := searchTree(tree, text)
-				copiedRootPointer.SetChildren(nodes)
-			} else {
-				tree.setAllDisplayTextToBasename(originalRootPointer)
-				tree.SetRoot(originalRootPointer)
-				window.removeSearch()
-			}
-		}).
+		SetText(tree.searchedText).
+		SetChangedFunc(onSearch).
 		SetDoneFunc(func(key tcell.Key) {
-			if key == tcell.KeyEnter {
+			if key == tcell.KeyEscape {
+				if len(tree.searchedText) <= 0 {
+					tree.setAllDisplayTextToBasename(tree.originalRootNode)
+					tree.SetRoot(tree.originalRootNode)
+				}
 				window.removeSearch()
 			}
 		})
 	return search
 }
 
-func searchTree(tree tree, text string) []*tview.TreeNode {
+func searchTree(tree *tree, text string) []*tview.TreeNode {
 	nodes := []*tview.TreeNode{}
 	for _, node := range lastNodes(tree.originalRootNode) {
 		path := extractNodeReference(node).path

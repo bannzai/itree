@@ -13,16 +13,17 @@ import (
 
 type tree struct {
 	*tview.TreeView
+	searchedText     string
 	originalRootNode *tview.TreeNode
 	window           *Window
 }
 
-func newTree(window *Window) tree {
+func newTree(window *Window) *tree {
 	rootDir := SharedConfig.RootPath
 	root := tview.NewTreeNode(rootDir).
 		SetColor(tcell.ColorRed).
 		SetReference(newNodeReference(rootDir, true, nil))
-	tree := tree{
+	tree := &tree{
 		TreeView: tview.NewTreeView().
 			SetRoot(root).
 			SetCurrentNode(root),

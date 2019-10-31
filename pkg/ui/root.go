@@ -10,7 +10,7 @@ type root struct {
 	fileInfo
 	feedback
 	search
-	tree
+	*tree
 }
 
 func newRoot(window *Window) *root {
