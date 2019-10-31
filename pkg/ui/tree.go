@@ -117,6 +117,8 @@ func (tree *tree) handleEventWithKey(event *tcell.EventKey) {
 		tree.window.ShowFileInfo(nodeReference.path)
 	case '?':
 		tree.window.SwitchUsage()
+	case '/':
+		tree.window.showSeach()
 	}
 }
 

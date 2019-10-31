@@ -22,7 +22,9 @@ func NewUsage(window *Window) Usage {
 		AddItem("New file", "", 'n', nil).
 		AddItem("New directory", "", 'N', nil).
 		AddItem("Open current node with $EDITOR. Default is vim", "", 'e', nil).
-		AddItem("appear information for current node", "", 'i', nil)
+		AddItem("appear information for current node", "", 'i', nil).
+		AddItem("change mode for file search", "", '/', nil).
+		AddItem("help message for usage itree", "", '?', nil)
 
 	list.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		window.transition.RemovePage(usage.name())
